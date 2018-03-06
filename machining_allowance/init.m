@@ -82,7 +82,7 @@ normals_model = importdata('normals_model.txt');
 %     end
 % end
 
-EGI_intensity3_model = zeros(320,1);
+EGI_intensity2_model = zeros(80,1);
 % for i = 1:320
 %     indice_matrix =  reshape(Triangles_L3(i,:), 3, 3);
 %     for j = 1:size(normals_model,1)
@@ -96,10 +96,10 @@ EGI_intensity3_model = zeros(320,1);
 
         s = size(normals_model,1);
         normal_flags = zeros(s,1);
-        T = Triangles_L3;
-        for i = 1:s
+        T = Triangles_L2;
+        parfor i = 1:s
             normal_vector = normals_model(i,:);
-            for j = 1:320
+            for j = 1:80
                 indice_matrix = reshape(T(j,:),3,3);
                 lamda = indice_matrix \ normal_vector';
                 if lamda(:) > 0
@@ -108,8 +108,8 @@ EGI_intensity3_model = zeros(320,1);
                 end                
             end
         end
-        for m = 1:320
-            EGI_intensity3_model(m) = numel(find(normal_flags(:)==m));
+        parfor m = 1:80
+            EGI_intensity2_model(m) = numel(find(normal_flags(:)==m));
         end
 
 % EGI_intensity4_model = zeros(1280,1);
@@ -142,5 +142,5 @@ data = struct('normals_data',normals_data',...
     'Triangles_L1',Triangles_L1,...
     'Triangles_L2',Triangles_L2,...
     'Triangles_L3',Triangles_L3,...
-    'EGI_intensity3_model',EGI_intensity3_model);
+    'EGI_intensity2_model',EGI_intensity2_model);
 end
